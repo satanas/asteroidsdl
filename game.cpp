@@ -11,7 +11,9 @@ bool Game::Init() {
     screenHeight = 480;
 
     input.init();
-    input.bind_key(32, false);
+    input.register_key(32, false);
+    input.register_mouse_button(1);
+    input.register_mouse_button(3);
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0 ) {
         cout << "Unable to init SDL: " << SDL_GetError() << endl;
@@ -41,13 +43,26 @@ bool Game::Init() {
 }
 
 int Game::Loop() {
-
+    cout << "Mouse " << Input::MOUSE_LEFT_BUTTON << endl;
     while (running) {
-        input.handle();
+        SDL_Delay(33);
+        input.handle_events();
         if (input.quit())
             break;
-        if (input.lookup(32))
+        if (input.keystroke(32))
             cout << "espacio" << endl;
+
+        if (input.keystroke(97))
+            cout << "A" << endl;
+
+        if (input.mouse_button(Input::MOUSE_LEFT_BUTTON))
+            cout << "left click" << endl;
+
+        if (input.mouse_button(Input::MOUSE_RIGHT_BUTTON))
+            cout << "right click" << endl;
+
+        //if (input.lookup_any())
+        //    cout << "any" << endl;
     }
     return 0;
 }
