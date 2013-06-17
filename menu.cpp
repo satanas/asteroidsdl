@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "level.h"
 
 Menu::Menu(SDL_Surface *game_screen, Input game_input) {
     screen = game_screen;
@@ -24,8 +25,10 @@ void Menu::loop() {
         if (input.keystroke(ESCAPE))
             break;
 
-        if (input.keystroke(ENTER))
-            cout << "Starting game..." << endl;
+        if (input.keystroke(ENTER)) {
+            Level level(screen, input);
+            level.loop();
+        }
 
         SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0, 0, 0));
 
