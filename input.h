@@ -10,6 +10,11 @@ using namespace std;
 
 const int ESCAPE = 27;
 const int ENTER = 13;
+const int ARROW_UP = 273;
+const int ARROW_DOWN = 274;
+const int ARROW_RIGHT = 275;
+const int ARROW_LEFT = 276;
+const int SPACE = 32;
 
 class Input {
     private:
