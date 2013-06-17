@@ -1,19 +1,15 @@
 #include "game.h"
 
 Game::Game() {
-    Init();
-    Loop();
+    if (!init())
+        exit(-1);
+    loop();
 }
 
-bool Game::Init() {
-    running = true;
-    screenWidth = 640;
-    screenHeight = 480;
-
+bool Game::init() {
     input.init();
-    input.register_key(32, false);
-    input.register_mouse_button(1);
-    input.register_mouse_button(3);
+    input.register_key(ESCAPE, false);
+    input.register_key(ENTER, false);
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0 ) {
         cout << "Unable to init SDL: " << SDL_GetError() << endl;
@@ -24,45 +20,37 @@ bool Game::Init() {
     if (SDL_Init( SDL_INIT_EVERYTHING ) == -1)
         return false;
 
-    //Initialize SDL_ttf
-    if (TTF_Init() == -1)
-        return false;
-
     //Initialize SDL_mixer
     if (Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 1024) == -1)
         return false;
 
-    //Create the screen
-    SDL_SetVideoMode(screenWidth, screenHeight, 0, SDL_HWSURFACE);
+    if (!load_fonts())
+        return false;
 
-    //Set the window caption
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, SDL_HWSURFACE);
     SDL_WM_SetCaption("Asteroids SDL", NULL);
 
-    //If everything initialized fine
     return true;
 }
 
-int Game::Loop() {
-    cout << "Mouse " << Input::MOUSE_LEFT_BUTTON << endl;
-    while (running) {
-        SDL_Delay(33);
-        input.handle_events();
-        if (input.quit())
-            break;
-        if (input.keystroke(32))
-            cout << "espacio" << endl;
-
-        if (input.keystroke(97))
-            cout << "A" << endl;
-
-        if (input.mouse_button(Input::MOUSE_LEFT_BUTTON))
-            cout << "left click" << endl;
-
-        if (input.mouse_button(Input::MOUSE_RIGHT_BUTTON))
-            cout << "right click" << endl;
-
-        //if (input.lookup_any())
-        //    cout << "any" << endl;
+bool Game::load_fonts() {
+    //Initialize SDL_ttf
+    if (TTF_Init() == -1) {
+        cout << "Unable to init SDL_ttf: " << TTF_GetError() << endl;
+        return false;
     }
+
+    //main_title_font = TTF_OpenFont("data/fonts/zerothre.ttf", 30);
+
+    //if (main_title_font == NULL) {
+    //    cout << "Coudn't load fonts";
+    //    return false;
+    //}
+    return true;
+}
+
+int Game::loop() {
+    Menu menu(screen, input);
+    menu.loop();
     return 0;
 }

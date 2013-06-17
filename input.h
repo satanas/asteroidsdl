@@ -1,9 +1,15 @@
+#ifndef _INPUT_H_
+#define _INPUT_H_
+
 #include <stdlib.h>
 #include <iostream>
 #include <map>
 #include "SDL.h"
 
 using namespace std;
+
+const int ESCAPE = 27;
+const int ENTER = 13;
 
 class Input {
     private:
@@ -29,4 +35,6 @@ class Input {
         bool mouse_button(int button);
         bool quit();
 };
+
+#endif
 

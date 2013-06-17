@@ -41,6 +41,7 @@ void Input::handle_events() {
         }
         if (event.type == SDL_KEYDOWN) {
             int key = event.key.keysym.sym;
+            cout << key << endl;
             map<int, bool>::iterator it = bound_keys.find(key);
             if (it != bound_keys.end()) {
                 pressed_keys.insert(make_pair(key, true));

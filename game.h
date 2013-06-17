@@ -1,5 +1,5 @@
-#ifndef __GAME_H_
-    #define _GAME_H_
+#ifndef _GAME_H_
+#define _GAME_H_
 
 #include <stdlib.h>
 #include <iostream>
@@ -8,22 +8,24 @@
 #include "SDL_mixer.h"
 #include "SDL_ttf.h"
 
+#include "global.h"
 #include "input.h"
+#include "menu.h"
 
 using namespace std;
 
 
 class Game {
     private:
-        bool running;
-        int screenWidth, screenHeight;
         Input input;
-        bool Init();
-        int Loop();
+        SDL_Surface *screen;
+
+        bool init();
+        int loop();
+        bool load_fonts();
 
     public:
         Game();
-
 
 };
 
